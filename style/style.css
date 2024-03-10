@@ -1,0 +1,43 @@
+body {
+  background: url(/assets/modern-bg.jpg) no-repeat center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  list-style: none;
+}
+
+.app {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  padding: 10px 0;
+}
+
+.header_ul-wrapper {
+  display: flex;
+  gap: 4px;
+}
+
+.header_ul-wrapper button {
+  padding: 4px 12px;
+  background-color: black;
+  color: white;
+  border-radius: 4px;
+}
