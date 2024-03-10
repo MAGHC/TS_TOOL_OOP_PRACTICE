@@ -1,13 +1,7 @@
-export class PageComponent {
-  private elem: HTMLUListElement;
+import { Component } from './Component.js';
 
+export class PageComponent extends Component<HTMLUListElement> {
   constructor() {
-    this.elem = document.createElement('ul');
-    this.elem.setAttribute('class', 'page');
-    this.elem.textContent = 'This is PageComponent';
-  }
-
-  attachTo(parent: HTMLElement, position: InsertPosition = 'afterbegin') {
-    parent.insertAdjacentElement(position, this.elem);
+    super('<ul class="page">페이지 컴포넌트</ul>');
   }
 }
