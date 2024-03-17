@@ -1,6 +1,7 @@
 import { ImageComponent } from './components/Image.js';
 import { Note } from './components/item/note.js';
 import { Todo } from './components/item/todo.js';
+import { VideoComponent } from './components/item/video.js';
 import { PageComponent } from './components/page/Page.js';
 
 export const App = class {
@@ -21,6 +22,9 @@ export const App = class {
 
     const todo = new Todo('투두 타이틀', '투두내용');
     todo.attachTo(appRoot, 'beforeend');
+
+    const video = new VideoComponent('슈카dd월드', 'https://www.youtube.com/watch?v=Zp--nzg6u_A');
+    video.attachTo(appRoot, 'beforeend');
   }
 };
 
