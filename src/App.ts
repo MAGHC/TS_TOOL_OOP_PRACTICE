@@ -1,5 +1,7 @@
 import { ImageComponent } from './components/Image.js';
-import { PageComponent } from './components/Page.js';
+import { Note } from './components/item/note.js';
+import { Todo } from './components/item/todo.js';
+import { PageComponent } from './components/page/Page.js';
 
 export const App = class {
   private readonly page: PageComponent;
@@ -13,6 +15,12 @@ export const App = class {
       '테스트용',
     );
     image.attachTo(appRoot, 'beforeend');
+
+    const note = new Note('새로운노트', '내용');
+    note.attachTo(appRoot, 'beforeend');
+
+    const todo = new Todo('투두 타이틀', '투두내용');
+    todo.attachTo(appRoot, 'beforeend');
   }
 };
 
