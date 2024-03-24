@@ -1,6 +1,10 @@
 import { Component } from '../Component.js';
 
-export class PageItem extends Component<HTMLElement> {
+export interface Composable {
+  addChild(child: Component<HTMLElement>): void;
+}
+
+export class PageItem extends Component<HTMLElement> implements Composable {
   constructor() {
     super(`<li class="page-item">
     <section class="page-item_body"></section>
@@ -18,7 +22,7 @@ export class PageItem extends Component<HTMLElement> {
   }
 }
 
-export class PageComponent extends Component<HTMLUListElement> {
+export class PageComponent extends Component<HTMLUListElement> implements Composable {
   constructor() {
     super('<ul class="page">페이지 컴포넌트</ul>');
   }
