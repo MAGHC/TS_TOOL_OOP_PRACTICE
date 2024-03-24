@@ -1,11 +1,5 @@
 import { Component } from '../Component.js';
 
-export class PageComponent extends Component<HTMLUListElement> {
-  constructor() {
-    super('<ul class="page">페이지 컴포넌트</ul>');
-  }
-}
-
 export class PageItem extends Component<HTMLElement> {
   constructor() {
     super(`<li class="page-item">
@@ -21,5 +15,17 @@ export class PageItem extends Component<HTMLElement> {
     const pageItemBody = this.el.querySelector('.page-itme_body')! as HTMLElement;
 
     child.attachTo(pageItemBody);
+  }
+}
+
+export class PageComponent extends Component<HTMLUListElement> {
+  constructor() {
+    super('<ul class="page">페이지 컴포넌트</ul>');
+  }
+
+  addChild(section: Component<HTMLElement>) {
+    const item = new PageItem();
+    item.addChild(section);
+    item.attachTo(this.el, 'beforeend'); // 맨마지막
   }
 }
