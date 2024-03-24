@@ -2,6 +2,7 @@
 
 export interface ComponentInterface {
   attachTo(parent: HTMLElement, position?: InsertPosition): void;
+  removeFrom(parent: HTMLElement): void;
 }
 
 // HTML El을 만드는 작업을 캡슐화함 외부에서는 어떻게 만드는지 상관하지않음
@@ -19,5 +20,12 @@ export class Component<T extends HTMLElement> implements ComponentInterface {
 
   attachTo(parent: HTMLElement, position: InsertPosition = 'afterbegin') {
     parent.insertAdjacentElement(position, this.el);
+  }
+
+  removeFrom(parent: HTMLElement) {
+    if (parent !== this.el.parentElement) {
+      throw new Error('Parent mismatch');
+    }
+    parent.removeChild(this.el);
   }
 }
