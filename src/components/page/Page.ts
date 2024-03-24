@@ -20,7 +20,7 @@ export class PageItem extends Component<HTMLElement> implements SectionContainer
 
   constructor() {
     super(`<li class="page-item">
-    <section class="page-item_body"></section>
+    <section class="page-itme_body"></section>
     <div class="page-itme_controls">
       <button class="close">X</button>
     </div>
