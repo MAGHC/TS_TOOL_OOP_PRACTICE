@@ -36,8 +36,7 @@ export class InputDialog extends Component<HTMLElement> implements Composable {
   }
 
   addChild(child: Component<HTMLElement>): void {
-    const body = this.el.querySelector('.dialog')! as HTMLElement;
-
+    const body = this.el.querySelector('.modal__body')! as HTMLElement;
     child.attachTo(body);
   }
 }

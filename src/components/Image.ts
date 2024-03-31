@@ -6,8 +6,8 @@ export class ImageComponent extends Component<HTMLElement> {
 
     super(`<section class="img_section">
              <div class="img_wrapper">
+             <p class="img_title"></p>
                 <img class='img_thumbnail' src="" alt="" />
-                <p class="img_title"></p>
               </div>
              </section>`);
 
