@@ -3,6 +3,7 @@ import { Note } from './components/item/note.js';
 import { Todo } from './components/item/todo.js';
 import { VideoComponent } from './components/item/video.js';
 import { PageComponent, PageItem } from './components/page/Page.js';
+import { InputDialog } from './modal/dialog.js';
 export const App = class {
     constructor(appRoot) {
         this.page = new PageComponent(PageItem);
@@ -15,6 +16,18 @@ export const App = class {
         this.page.addChild(todo);
         const video = new VideoComponent('슈카dd월드', 'https://www.youtube.com/watch?v=Zp--nzg6u_A');
         this.page.addChild(video);
+        const imgBtn = document.querySelector('#new-img');
+        imgBtn.addEventListener('click', () => {
+            const modal = new InputDialog();
+            modal.setOnCloseListener(() => {
+                modal.removeFrom(document.body);
+            });
+            modal.setOnSubmitListener(() => {
+                modal.removeFrom(document.body);
+            });
+            modal.attachTo(document.body);
+        });
     }
 };
 new App(document.querySelector('.doc'));
+console.log('/ ');
