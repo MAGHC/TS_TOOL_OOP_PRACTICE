@@ -5,11 +5,12 @@ import { Todo } from './components/item/todo.js';
 import { VideoComponent } from './components/item/video.js';
 import { Composable, PageComponent, PageItem } from './components/page/Page.js';
 import { InputDialog } from './modal/dialog.js';
+// import { MediaSectionInput } from './modal/input/media_input.js';
 
 export const App = class {
   private readonly page: Component<HTMLElement> & Composable;
 
-  constructor(appRoot: HTMLElement) {
+  constructor(appRoot: HTMLElement, modalRoot: HTMLElement) {
     this.page = new PageComponent(PageItem);
     this.page.attachTo(appRoot);
 
@@ -35,20 +36,21 @@ export const App = class {
     imgBtn.addEventListener('click', () => {
       const modal = new InputDialog();
 
+      // const mediaIpnutSection = new MediaSectionInput();
+
+      // modal.addChild(mediaIpnutSection);
+      modal.attachTo(modalRoot);
+
       modal.setOnCloseListener(() => {
-        modal.removeFrom(document.body);
+        modal.removeFrom(modalRoot);
       });
 
       modal.setOnSubmitListener(() => {
         //todo
-        modal.removeFrom(document.body);
+        modal.removeFrom(modalRoot);
       });
-
-      modal.attachTo(document.body);
     });
   }
 };
 
-new App(document.querySelector('.doc')! as HTMLElement);
-
-console.log('/ ');
+new App(document.querySelector('.doc')! as HTMLElement, document.querySelector('#modal_root')! as HTMLDivElement);
