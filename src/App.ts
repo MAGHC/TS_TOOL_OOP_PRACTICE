@@ -20,10 +20,30 @@ export const App = class {
     const todo = new Todo('투두 타이틀', '투두내용');
     this.page.addChild(todo);
 
-    const video = new VideoComponent('슈카dd월드', 'https://www.youtube.com/watch?v=Zp--nzg6u_A');
-    this.page.addChild(video);
-
     const imgBtn = document.querySelector('#new-img')! as HTMLButtonElement;
+    const videoBtn = document.querySelector('#new-video')! as HTMLButtonElement;
+
+    console.log(videoBtn);
+    videoBtn.addEventListener('click', () => {
+      const modal = new InputDialog();
+
+      const mediaIpnutSection = new MediaSectionInput();
+
+      modal.addChild(mediaIpnutSection);
+
+      modal.attachTo(modalRoot);
+
+      modal.setOnCloseListener(() => {
+        modal.removeFrom(modalRoot);
+      });
+
+      modal.setOnSubmitListener(() => {
+        const video = new VideoComponent(mediaIpnutSection.title, mediaIpnutSection.url);
+
+        this.page.addChild(video);
+        modal.removeFrom(modalRoot);
+      });
+    });
 
     // onclick에 할당하면 기존의 리스너를덮어씌움.
     imgBtn.addEventListener('click', () => {
@@ -40,7 +60,6 @@ export const App = class {
       });
 
       modal.setOnSubmitListener(() => {
-        console.log('submt');
         const image = new ImageComponent(mediaIpnutSection.url, mediaIpnutSection.title);
         this.page.addChild(image);
         modal.removeFrom(modalRoot);
