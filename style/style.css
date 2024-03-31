@@ -7,6 +7,19 @@ body {
   margin: 0;
 }
 
+.dialog {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 9999999;
+}
+
 ul {
   margin: 0;
   list-style: none;
