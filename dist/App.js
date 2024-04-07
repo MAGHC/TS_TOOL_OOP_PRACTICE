@@ -5,6 +5,7 @@ import { VideoComponent } from './components/item/video.js';
 import { PageComponent, PageItem } from './components/page/Page.js';
 import { InputDialog } from './modal/dialog.js';
 import { MediaSectionInput } from './modal/input/media_input.js';
+import { TextSectionInput } from './modal/input/text_input.js';
 export const App = class {
     constructor(appRoot, modalRoot) {
         this.page = new PageComponent(PageItem);
@@ -41,6 +42,36 @@ export const App = class {
             modal.setOnSubmitListener(() => {
                 const image = new ImageComponent(mediaIpnutSection.url, mediaIpnutSection.title);
                 this.page.addChild(image);
+                modal.removeFrom(modalRoot);
+            });
+        });
+        const noteBtn = document.querySelector('#new-note');
+        const todoBtn = document.querySelector('#new-todo');
+        noteBtn.addEventListener('click', () => {
+            const modal = new InputDialog();
+            const noteInputSection = new TextSectionInput();
+            modal.addChild(noteInputSection);
+            modal.attachTo(modalRoot);
+            modal.setOnCloseListener(() => {
+                modal.removeFrom(modalRoot);
+            });
+            modal.setOnSubmitListener(() => {
+                const newNote = new Note(noteInputSection.title, noteInputSection.body);
+                this.page.addChild(newNote);
+                modal.removeFrom(modalRoot);
+            });
+        });
+        todoBtn.addEventListener('click', () => {
+            const modal = new InputDialog();
+            const todoInputSection = new TextSectionInput();
+            modal.addChild(todoInputSection);
+            modal.attachTo(modalRoot);
+            modal.setOnCloseListener(() => {
+                modal.removeFrom(modalRoot);
+            });
+            modal.setOnSubmitListener(() => {
+                const newTodo = new Todo(todoInputSection.title, todoInputSection.body);
+                this.page.addChild(newTodo);
                 modal.removeFrom(modalRoot);
             });
         });
