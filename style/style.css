@@ -54,3 +54,7 @@ ul {
   color: white;
   border-radius: 4px;
 }
+
+.page-itme_body section {
+  background-color: gray;
+}
