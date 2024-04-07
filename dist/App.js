@@ -10,10 +10,6 @@ export const App = class {
     constructor(appRoot, modalRoot) {
         this.page = new PageComponent(PageItem);
         this.page.attachTo(appRoot);
-        const note = new Note('새로운노트', '내용');
-        this.page.addChild(note);
-        const todo = new Todo('투두 타이틀', '투두내용');
-        this.page.addChild(todo);
         const imgBtn = document.querySelector('#new-img');
         const videoBtn = document.querySelector('#new-video');
         console.log(videoBtn);

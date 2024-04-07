@@ -46,7 +46,7 @@ export class PageItem extends Component<HTMLElement> implements SectionContainer
 
 export class PageComponent extends Component<HTMLUListElement> implements Composable {
   constructor(private pageItemConstructor: SectionContainerConstructor) {
-    super('<ul class="page">페이지 컴포넌트</ul>');
+    super('<ul class="page"></ul>');
   }
 
   addChild(section: Component<HTMLElement>) {
