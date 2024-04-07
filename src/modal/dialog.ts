@@ -1,8 +1,18 @@
-import { Component } from '../components/Component.js';
+import { Component, ComponentInterface } from '../components/Component.js';
 import { Composable } from '../components/page/Page.js';
 
 type OnClosetListener = () => void;
 type OnSubmitListener = () => void;
+
+export interface MediaData {
+  readonly title: string;
+  readonly url: string;
+}
+
+export interface TextData {
+  readonly title: string;
+  readonly body: string;
+}
 
 export class InputDialog extends Component<HTMLElement> implements Composable {
   closeListener?: OnClosetListener;
@@ -35,7 +45,7 @@ export class InputDialog extends Component<HTMLElement> implements Composable {
     this.submitListenr = listener;
   }
 
-  addChild(child: Component<HTMLElement>): void {
+  addChild(child: ComponentInterface): void {
     const body = this.el.querySelector('.modal__body')! as HTMLElement;
     child.attachTo(body);
   }

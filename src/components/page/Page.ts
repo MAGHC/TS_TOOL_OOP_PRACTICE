@@ -1,7 +1,7 @@
-import { Component } from '../Component.js';
+import { Component, ComponentInterface } from '../Component.js';
 
 export interface Composable {
-  addChild(child: Component<HTMLElement>): void;
+  addChild(child: ComponentInterface): void;
 }
 
 type SectionContainerConstructor = {
