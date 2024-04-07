@@ -3,6 +3,7 @@
 export interface ComponentInterface {
   attachTo(parent: HTMLElement, position?: InsertPosition): void;
   removeFrom(parent: HTMLElement): void;
+  attach(com: ComponentInterface, position?: InsertPosition): void;
 }
 
 // HTML El을 만드는 작업을 캡슐화함 외부에서는 어떻게 만드는지 상관하지않음
@@ -27,5 +28,8 @@ export class Component<T extends HTMLElement> implements ComponentInterface {
       throw new Error('Parent mismatch');
     }
     parent.removeChild(this.el);
+  }
+  attach(com: ComponentInterface, position?: InsertPosition | undefined): void {
+    com.attachTo(this.el, position);
   }
 }

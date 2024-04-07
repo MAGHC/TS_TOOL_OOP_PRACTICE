@@ -16,6 +16,7 @@ type OnCloseListener = () => void;
 interface SectionContainer extends Component<HTMLElement>, Composable {
   setOnCloseListener(listener: OnCloseListener): void;
   setOnDragStateListener(listener: OnDragStateListener<SectionContainer>): void;
+  muteChildren(state: 'mute' | 'unmute'): void;
 }
 
 export class PageItem extends Component<HTMLElement> implements SectionContainer {
@@ -45,10 +46,10 @@ export class PageItem extends Component<HTMLElement> implements SectionContainer
     });
 
     this.el.addEventListener('dragenter', (e: DragEvent) => {
-      this.onDragStart(e);
+      this.onDragEnter(e);
     });
     this.el.addEventListener('dragleave', (e: DragEvent) => {
-      this.onDragEnd(e);
+      this.onDragLeave(e);
     });
   }
 
@@ -87,9 +88,22 @@ export class PageItem extends Component<HTMLElement> implements SectionContainer
     // 내가 누구고 드래그 상태가 무엇인지
     this.dragStateListener = listener;
   }
+
+  muteChildren(state: 'mute' | 'unmute'): void {
+    if (state === 'mute') {
+      this.el.classList.add('mute-children');
+    } else {
+      this.el.classList.remove('mute-children');
+    }
+  }
 }
 
 export class PageComponent extends Component<HTMLUListElement> implements Composable {
+  private dropTarget?: SectionContainer;
+  private dragTarget?: SectionContainer;
+  // 버그를 막기위해 children을 알아야.
+  private children = new Set<SectionContainer>();
+
   constructor(private pageItemConstructor: SectionContainerConstructor) {
     super('<ul class="page"></ul>');
 
@@ -108,6 +122,14 @@ export class PageComponent extends Component<HTMLUListElement> implements Compos
 
   onDragDrop(e: DragEvent) {
     e.preventDefault();
+    // 드랍 다켓이랑 start 타켓이랑 변경시켜버리기
+    if (!this.dropTarget) {
+      return;
+    }
+    if (this.dragTarget && this.dragTarget !== this.dropTarget) {
+      this.dragTarget.removeFrom(this.el);
+      this.dropTarget.attach(this.dragTarget, 'beforebegin');
+    }
   }
 
   addChild(section: Component<HTMLElement>) {
@@ -116,7 +138,42 @@ export class PageComponent extends Component<HTMLUListElement> implements Compos
     item.attachTo(this.el, 'beforeend'); // 맨마지막
     item.setOnCloseListener(() => {
       item.removeFrom(this.el);
+      this.children.delete(item);
     });
-    item.setOnDragStateListener((target: SectionContainer, state: DragState) => {});
+
+    this.children.add(item);
+
+    item.setOnDragStateListener((target: SectionContainer, state: DragState) => {
+      switch (state) {
+        case 'start':
+          this.dragTarget = target;
+
+          this.updateSection('mute');
+
+          break;
+        case 'end':
+          this.dragTarget = undefined;
+          this.updateSection('unmute');
+
+          break;
+
+        case 'leave':
+          this.dropTarget = undefined;
+          break;
+
+        case 'enter':
+          this.dropTarget = target;
+
+          break;
+
+        default:
+          throw new Error(`${state} this state is missing`);
+      }
+    });
+  }
+  private updateSection(state: 'mute' | 'unmute') {
+    this.children.forEach((section) => {
+      section.muteChildren(state);
+    });
   }
 }

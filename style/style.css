@@ -58,3 +58,10 @@ ul {
 .page-itme_body section {
   background-color: gray;
 }
+
+/* drag & drop */
+
+/* 좋은방법은아님 */
+.mute-children * {
+  pointer-events: none;
+}
