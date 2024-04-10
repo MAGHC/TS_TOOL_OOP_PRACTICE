@@ -4,8 +4,11 @@ export interface ComponentInterface {
   attachTo(parent: HTMLElement, position?: InsertPosition): void;
   removeFrom(parent: HTMLElement): void;
   attach(com: ComponentInterface, position?: InsertPosition): void;
+  registerEventListener<K extends keyof HTMLElementEventMap>(
+    type: K,
+    listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => unknown,
+  ): void;
 }
-
 // HTML El을 만드는 작업을 캡슐화함 외부에서는 어떻게 만드는지 상관하지않음
 
 export class Component<T extends HTMLElement> implements ComponentInterface {
@@ -31,5 +34,11 @@ export class Component<T extends HTMLElement> implements ComponentInterface {
   }
   attach(com: ComponentInterface, position?: InsertPosition | undefined): void {
     com.attachTo(this.el, position);
+  }
+  registerEventListener<K extends keyof HTMLElementEventMap>(
+    type: K,
+    listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => unknown,
+  ): void {
+    this.el.addEventListener(type, listener);
   }
 }
