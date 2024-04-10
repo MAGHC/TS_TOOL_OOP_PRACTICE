@@ -56,7 +56,7 @@ ul {
 }
 
 .page-itme_body section {
-  background-color: gray;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* drag & drop */
@@ -64,4 +64,22 @@ ul {
 /* 좋은방법은아님 */
 .mute-children * {
   pointer-events: none;
+}
+
+.dragStarted {
+  animation: drag_start 250ms;
+  opacity: 0.2;
+}
+
+@keyframes drag_start {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.dropArea {
+  border: 2px solid green;
 }

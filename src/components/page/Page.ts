@@ -18,6 +18,7 @@ interface SectionContainer extends Component<HTMLElement>, Composable {
   setOnDragStateListener(listener: OnDragStateListener<SectionContainer>): void;
   muteChildren(state: 'mute' | 'unmute'): void;
   getBoundingRect(): DOMRect;
+  onDropped(): void;
 }
 
 export class PageItem extends Component<HTMLElement> implements SectionContainer {
@@ -57,18 +58,26 @@ export class PageItem extends Component<HTMLElement> implements SectionContainer
   onDragStart(_: DragEvent) {
     //_로 안쓴다고 알릴수있음ㄴ
     this.notifyDragObservers('start');
+    this.el.classList.add('dragStarted');
   }
 
   onDragEnd(_: DragEvent) {
     this.notifyDragObservers('end');
+    this.el.classList.remove('dragStarted');
   }
 
   onDragEnter(_: DragEvent) {
     this.notifyDragObservers('enter');
+    this.el.classList.add('dropArea');
   }
 
   onDragLeave(_: DragEvent) {
     this.notifyDragObservers('leave');
+    this.el.classList.remove('dropArea');
+  }
+
+  onDropped() {
+    this.el.classList.remove('dropArea');
   }
 
   notifyDragObservers(state: DragState) {
@@ -128,6 +137,7 @@ export class PageComponent extends Component<HTMLUListElement> implements Compos
   onDragDrop(e: DragEvent) {
     e.preventDefault();
     // 드랍 다켓이랑 start 타켓이랑 변경시켜버리기
+
     if (!this.dropTarget) {
       return;
     }
@@ -137,7 +147,13 @@ export class PageComponent extends Component<HTMLUListElement> implements Compos
       this.dragTarget.removeFrom(this.el);
 
       this.dropTarget.attach(this.dragTarget, dropY < srcEl.y ? 'beforebegin' : 'afterend');
+
+      console.log(dropY < srcEl.y, '???sa?/dsa?');
     }
+
+    console.log(this.dragTarget, '?DSaasddassad');
+
+    this.dropTarget.onDropped();
   }
 
   addChild(section: Component<HTMLElement>) {
