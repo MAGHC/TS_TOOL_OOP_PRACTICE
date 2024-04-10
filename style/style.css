@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: url(/assets/modern-bg.jpg) no-repeat center;
   display: flex;
@@ -81,5 +85,5 @@ ul {
 }
 
 .dropArea {
-  border: 2px solid green;
+  box-shadow: 0 0 0 2px green;
 }
