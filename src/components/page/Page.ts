@@ -1,3 +1,4 @@
+import { Draggable, Dropable, EnableDragging, EnableDrop, EnableHover, Hoverable } from '../../decorators/draggable.js';
 import { Component, ComponentInterface } from '../Component.js';
 
 export interface Composable {
@@ -13,7 +14,7 @@ type OnDragStateListener<T extends ComponentInterface> = (target: T, state: Drag
 type DragState = 'start' | 'end' | 'leave' | 'enter';
 type OnCloseListener = () => void;
 
-interface SectionContainer extends Component<HTMLElement>, Composable {
+interface SectionContainer extends Component<HTMLElement>, Composable, Draggable, Hoverable {
   setOnCloseListener(listener: OnCloseListener): void;
   setOnDragStateListener(listener: OnDragStateListener<SectionContainer>): void;
   muteChildren(state: 'mute' | 'unmute'): void;
@@ -21,6 +22,8 @@ interface SectionContainer extends Component<HTMLElement>, Composable {
   onDropped(): void;
 }
 
+@EnableDragging
+@EnableHover
 export class PageItem extends Component<HTMLElement> implements SectionContainer {
   private closeListener?: OnCloseListener;
 
@@ -39,20 +42,6 @@ export class PageItem extends Component<HTMLElement> implements SectionContainer
     closeBtn.onclick = () => {
       this.closeListener && this.closeListener();
     };
-
-    this.el.addEventListener('dragstart', (e: DragEvent) => {
-      this.onDragStart(e);
-    });
-    this.el.addEventListener('dragend', (e: DragEvent) => {
-      this.onDragEnd(e);
-    });
-
-    this.el.addEventListener('dragenter', (e: DragEvent) => {
-      this.onDragEnter(e);
-    });
-    this.el.addEventListener('dragleave', (e: DragEvent) => {
-      this.onDragLeave(e);
-    });
   }
 
   onDragStart(_: DragEvent) {
@@ -112,7 +101,8 @@ export class PageItem extends Component<HTMLElement> implements SectionContainer
   }
 }
 
-export class PageComponent extends Component<HTMLUListElement> implements Composable {
+@EnableDrop
+export class PageComponent extends Component<HTMLUListElement> implements Composable, Dropable {
   private dropTarget?: SectionContainer;
   private dragTarget?: SectionContainer;
   // 버그를 막기위해 children을 알아야.
@@ -120,22 +110,14 @@ export class PageComponent extends Component<HTMLUListElement> implements Compos
 
   constructor(private pageItemConstructor: SectionContainerConstructor) {
     super('<ul class="page"></ul>');
-
-    this.el.addEventListener('dragover', (e: DragEvent) => {
-      this.onDragOver(e);
-    });
-    this.el.addEventListener('drop', (e: DragEvent) => {
-      this.onDragDrop(e);
-    });
   }
 
-  onDragOver(e: DragEvent) {
-    e.preventDefault();
+  onDragOver() {
+    console.log('saddsadsa  ');
     // drop zone을 define할때에는  preventDefault()를 꼭 호출해야됨 안그러면 touch나 pointer이벤트에서 뭔가 일어날수있다 => 버그 많고 더러움
   }
 
   onDragDrop(e: DragEvent) {
-    e.preventDefault();
     // 드랍 다켓이랑 start 타켓이랑 변경시켜버리기
 
     if (!this.dropTarget) {
